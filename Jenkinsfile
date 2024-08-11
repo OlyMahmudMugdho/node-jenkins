@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
+                // Checkout the code from the repository
                 checkout scm
             }
         }
@@ -12,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image and tag it as 'my-node-app'
-                    sh 'docker build -t my-node-app .'
+                    dockerImage = docker.build('my-node-app')
                 }
             }
         }
@@ -32,7 +33,8 @@ pipeline {
 
     post {
         always {
-            cleanWs() // Clean workspace after build
+            // Clean up the workspace after the build
+            cleanWs()
         }
     }
 }
