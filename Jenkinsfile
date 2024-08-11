@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image and tag it as 'my-node-app'
-                    dockerImage = docker.build('my-node-app')
+                    sh 'docker build -t my-nodejs-app .'
                 }
             }
         }
