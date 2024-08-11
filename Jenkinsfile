@@ -11,6 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    // Build the Docker image and tag it as 'my-node-app'
                     dockerImage = docker.build('my-node-app')
                 }
             }
@@ -19,9 +20,11 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    dockerImage.inside {
-                        sh 'docker run -d -p 3000:3000 my-node-app'
-                    }
+                    // Stop and remove any existing container with the same name
+                    sh 'docker rm -f my-node-app-container || true'
+
+                    // Run the Docker container on your local machine
+                    sh 'docker run -d -p 3000:3000 --name my-node-app-container my-node-app'
                 }
             }
         }
@@ -29,7 +32,7 @@ pipeline {
 
     post {
         always {
-            cleanWs()
+            cleanWs() // Clean workspace after build
         }
     }
 }
